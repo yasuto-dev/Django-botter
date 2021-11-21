@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ジャンゴボッター</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h3>ジャンゴボッター</h3>
+        <!-- 入力-->
+        <form action="{% url 'app:bot_response' %}" method="POST">
+            {% csrf_token %}
+            <input placeholder="入力" type="text" name="input_text">
+            <input type="submit">
+        </form>   
+          <!-- 結果 -->
+          <h4>
+          <div class="chat-log">
+          </h4>
+        </div>
+        
+      </div>
+ 
+
+        <!-- jQuery -->
+        <script>
+            // Ajax
+            $('form').submit(function(event) {
+                event.preventDefault();
+                var form = $(this);
+    
+                // HTMLフォームの情報を設定する
+                $.ajax({
+                    url: form.prop('action'), // 非同期通信するURL（/bot_response/）
+                    type: form.prop('method'), // POST
+                    data: form.serialize(), // データの情報
+                    dataType: 'text', // データのタイプ
+                })
+                .done(function(statement) {
+                    // 送信が成功されたら<div class="chat-log">内に結果が表示される
+                    $('.chat-log').text(statement);
+                })
+            });
+        </script>
+</body>
+</html>
